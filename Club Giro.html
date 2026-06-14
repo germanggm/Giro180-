@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Giro 180º | Giro Club</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary: #d4ff00; --bg: #121212; --surface: #191b1f; --text: #ffffff; --antracita: #2c2e35; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+        /* --- NAVEGACIÓN --- */
+        nav { height: 80px; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; background: #000000; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 1000; }
+        .nav-logo-img { height: 55px; transition: transform 0.3s ease; }
+        .nav-list { display: flex; list-style: none; gap: 1.5rem; }
+        .nav-list a { text-decoration: none; color: #fff; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; }
+        .nav-list a:hover { color: var(--primary); }
+
+        /* --- SECCIÓN GENERAL --- */
+        .activities-info { padding: 90px 5%; text-align: center; background-color: var(--antracita); min-height: calc(100vh - 80px); }
+        .experience-header { max-width: 800px; margin: 0 auto 60px auto; }
+        .experience-tag { color: var(--primary); font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; display: inline-block; }
+        .experience-header h1 { color: #ffffff; font-size: 3.8rem; margin-bottom: 20px; text-transform: uppercase; font-weight: 900; letter-spacing: -1px; }
+        .title-divider { width: 60px; height: 4px; background: var(--primary); margin: 0 auto 25px auto; }
+        .experience-header p { color: #ced4da; font-size: 1.25rem; line-height: 1.7; }
+
+        /* --- CUADRÍCULA --- */
+        .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; max-width: 1200px; margin: 0 auto; }
+        .activity-card { background: var(--surface); border-radius: 20px; border: 1px solid #2a2d34; color: #ccc; cursor: pointer; transition: all 0.3s ease; }
+        .activity-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 15px 40px rgba(212, 255, 0, 0.15); }
+        .card-image-wrapper { width: 100%; height: 200px; position: relative; overflow: hidden; border-radius: 20px 20px 0 0; }
+        .card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .status-badge { position: absolute; top: 20px; right: 20px; padding: 6px 14px; border-radius: 30px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; background: var(--primary); color: #000; }
+        .card-text-block { padding: 30px; text-align: left; }
+        .label { font-size: 1.3rem; font-weight: 900; color: #fff; margin-bottom: 10px; }
+        .activity-description { font-size: 0.95rem; color: #a0a5b0; margin-bottom: 15px; }
+        .btn-activity { display: block; text-align: center; border: 2px solid var(--primary); padding: 14px; border-radius: 10px; font-weight: 800; color: #fff; text-transform: uppercase; background: transparent; }
+        
+        /* --- MODALES Y FOOTER --- */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: #191b1f; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; }
+        footer { background: #000; padding: 80px 5%; border-top: 1px solid #333; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo"><a href="Inicio.html"><img src="Img/476EE388-A31A-4EA6-8DFC-3C9BFCCC7760.png" class="nav-logo-img"></a></div>
+       <ul class="nav-list">
+            <li><a href="Inicio.html" style="color: var(--primary);">Inicio</a></li>
+            <li><a href="Tarifas.html">Tarifas</a></li>
+            <li><a href="Reservas.html">Reservas</a></li>
+            <li><a href="Conocenos.html">Conócenos</a></li>
+            <li><a href="Club Giro.html">Club Giro</a></li>
+            <li><a href="Giro store.html">Giro Store</a></li>
+        </ul>
+    </nav>
+
+    <!-- SECCIÓN DE EVENTOS -->
+<div class="activities-info">
+<!-- Bloque de Cabecera Estilizado -->
+<div class="experience-header">
+<span class="experience-tag">Comunidad & Eventos</span>
+<h1>Giro Club</h1>
+<div class="title-divider"></div>
+<p>Mucho más que entrenar. Rompemos las paredes del gimnasio para vivir momentos únicos, conectar con la naturaleza y compartir experiencias extraordinarias con toda la comunidad de Giro 180º.</p>
+</div>
+        
+        <div class="details">
+            <!-- Taller Sevillanas -->
+            <div class="activity-card" onclick="openModal('modal-sevillanas')">
+                <div class="card-image-wrapper"><span class="status-badge">Próximamente</span><img src="Img/taller-sevillanas.jpg"></div>
+                <div class="card-text-block">
+                    <div class="label">Taller de Sevillanas</div>
+                    <p class="activity-description">Aprende el compás y el arte de nuestras raíces.</p>
+                    <span class="btn-activity">Más Información</span>
+                </div>
+            </div>
+
+            <!-- Padel Surf -->
+            <div class="activity-card" onclick="openModal('modal-padelsurf')">
+                <div class="card-image-wrapper"><span class="status-badge">Abierto</span><img src="Img/padel-surf.jpg"></div>
+                <div class="card-text-block">
+                    <div class="label">Pádel Surf</div>
+                    <p class="activity-description">Salimos del gimnasio para conquistar el agua.</p>
+                    <span class="btn-activity">Más Información</span>
+                </div>
+            </div>
+
+            <!-- Torneo de Padel -->
+            <div class="activity-card" onclick="openModal('modal-padel')">
+                <div class="card-image-wrapper"><span class="status-badge">Abierto</span><img src="Img/torneo-padel.jpg"></div>
+                <div class="card-text-block">
+                    <div class="label">Torneos de Pádel</div>
+                    <p class="activity-description">Saca tu lado más competitivo en nuestros torneos.</p>
+                    <span class="btn-activity">Más Información</span>
+                </div>
+            </div>
+
+            <!-- Comida de Navidad -->
+            <div class="activity-card" onclick="openModal('modal-navidad')">
+                <div class="card-image-wrapper"><span class="status-badge">Diciembre</span><img src="Img/comida-navidad.jpg"></div>
+                <div class="card-text-block">
+                    <div class="label">Comida de Navidad</div>
+                    <p class="activity-description">El momento perfecto para celebrar los objetivos cumplidos.</p>
+                    <span class="btn-activity">Más Información</span>
+                </div>
+            </div>
+
+            <!-- Comida de Verano -->
+            <div class="activity-card" onclick="openModal('modal-verano')">
+                <div class="card-image-wrapper"><span class="status-badge">Julio</span><img src="Img/comida-verano.jpg"></div>
+                <div class="card-text-block">
+                    <div class="label">Comida de Verano</div>
+                    <p class="activity-description">Despedimos la temporada con sol y buen ambiente.</p>
+                    <span class="btn-activity">Más Información</span>
+                </div>
+            </div>
+
+            <!-- Ratitos de Convivencia -->
+            <div class="activity-card" onclick="openModal('modal-convivencia')">
+                <div class="card-image-wrapper"><span class="status-badge">Mensual</span><img src="Img/convivencia.jpg"></div>
+                <div class="card-text-block">
+                    <div class="label">Ratitos de Convivencia</div>
+                    <p class="activity-description">Encuentros casuales para charlar y fortalecer la comunidad.</p>
+                    <span class="btn-activity">Más Información</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALES -->
+    <div id="modal-sevillanas" class="modal"><div class="modal-content"><h3>Taller de Sevillanas</h3><button class="btn-activity" onclick="closeModal('modal-sevillanas')">Cerrar</button></div></div>
+    <div id="modal-padelsurf" class="modal"><div class="modal-content"><h3>Pádel Surf</h3><button class="btn-activity" onclick="closeModal('modal-padelsurf')">Cerrar</button></div></div>
+    <div id="modal-padel" class="modal"><div class="modal-content"><h3>Torneo de Pádel</h3><button class="btn-activity" onclick="closeModal('modal-padel')">Cerrar</button></div></div>
+    <div id="modal-navidad" class="modal"><div class="modal-content"><h3>Comida de Navidad</h3><button class="btn-activity" onclick="closeModal('modal-navidad')">Cerrar</button></div></div>
+    <div id="modal-verano" class="modal"><div class="modal-content"><h3>Comida de Verano</h3><button class="btn-activity" onclick="closeModal('modal-verano')">Cerrar</button></div></div>
+    <div id="modal-convivencia" class="modal"><div class="modal-content"><h3>Ratitos de Convivencia</h3><button class="btn-activity" onclick="closeModal('modal-convivencia')">Cerrar</button></div></div>
+
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    </script>
+</body>
+</html>            
+

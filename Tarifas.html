@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Giro 180º | Cuotas del Centro</title>
+    <!-- Enlace manual a fuentes de Google -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variables globales de color del gimnasio */
+        :root { 
+            --fluorescente: #d4ff00; 
+            --fondo-oscuro: #121212; 
+            --tarjeta-bg: #1e1e1e; 
+            --blanco: #ffffff; 
+            --gris-medio: #2c2e35;
+        }
+        
+        /* Ajustes básicos de reseteo manual */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        body { 
+            background: var(--fondo-oscuro); 
+            color: var(--blanco); 
+            -webkit-font-smoothing: antialiased; 
+        }
+
+        /* --- MENÚ DE ARRIBA --- */
+        .cabecera-nav { 
+            height: 80px; 
+            padding: 0 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: #000000; 
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .caja-logo { display: flex; align-items: center; }
+        .img-logo-giro { 
+            height: 55px; 
+            width: auto; 
+            display: block; 
+            transition: transform 0.3s ease; 
+        }
+        .img-logo-giro:hover { transform: scale(1.05); }
+
+        .lista-enlaces { display: flex; list-style: none; gap: 1.5rem; }
+        .lista-enlaces a { 
+            text-decoration: none; 
+            color: white; 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+        }
+        .lista-enlaces a:hover { color: var(--fluorescente); }
+
+        /* --- CONTENEDOR DE PRECIOS --- */
+        .bloque-tarifas {
+            background: var(--gris-medio);
+            min-height: calc(100vh - 80px);
+            padding: 60px 5%;
+            width: 100%;
+        }
+
+        .titulo-principal { 
+            text-align: center; 
+            font-size: 2.5rem; 
+            margin-bottom: 40px; 
+            text-transform: uppercase; 
+        }
+
+        .contenedor-grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; 
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+            width: 100%;
+        }
+        
+        .tarjeta-precio { 
+            background: var(--tarjeta-bg); 
+            padding: 40px 20px; 
+            border-radius: 15px; 
+            border: 1px solid #444; 
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .tarjeta-precio:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--fluorescente); 
+        }
+
+        .tarjeta-precio h2 { 
+            color: var(--fluorescente); 
+            margin-bottom: 10px; 
+            text-transform: uppercase; 
+            font-size: 1.4rem; 
+        }
+
+        .numero-precio { 
+            font-size: 3rem; 
+            font-weight: 900; 
+            margin: 15px 0 25px 0; /* Añadido margen inferior para equilibrar el botón */
+        }
+
+        .btn-tarifa-link {
+            background: transparent;
+            color: var(--fluorescente);
+            border: 1px solid var(--fluorescente);
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-decoration: none;
+            text-align: center;
+            width: 100%;
+            margin-top: auto; 
+            transition: background 0.2s, color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-tarifa-link:hover {
+            background: var(--fluorescente);
+            color: #000;
+        }
+
+        /* --- SECCIÓN 1: TABLA COMPARATIVA --- */
+        .tabla-seccion {
+            max-width: 1000px;
+            margin: 60px auto 40px auto;
+            width: 100%;
+            overflow-x: auto; 
+            background: var(--tarjeta-bg);
+            border-radius: 12px;
+            border: 1px solid #333;
+            padding: 10px;
+        }
+
+        .tabla-giro {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            min-width: 600px; 
+        }
+
+        .tabla-giro th, .tabla-giro td {
+            padding: 18px 12px;
+            border-bottom: 1px solid #2d2d2d;
+            font-size: 0.95rem;
+        }
+
+        .tabla-giro th {
+            color: var(--fluorescente);
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .tabla-giro td.col-servicio {
+            text-align: left;
+            font-weight: bold;
+            color: #fff;
+            padding-left: 20px;
+        }
+
+        .check-ok {
+            color: var(--fluorescente);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* --- SECCIÓN 2: FAQs DE PAGOS --- */
+        .bloque-dudas-pagos {
+            max-width: 900px;
+            margin: 60px auto 40px auto;
+            text-align: left;
+            width: 100%;
+        }
+        .subtitulo-extra {
+            text-align: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            color: var(--blanco);
+            letter-spacing: 0.5px;
+        }
+        .item-duda {
+            background: var(--tarjeta-bg);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--fluorescente);
+            border-top: 1px solid #333;
+            border-right: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        .item-duda h4 {
+            color: var(--fluorescente);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .item-duda p {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- SECCIÓN 3: BANNER DE PRUEBA GRATUITA --- */
+        .banner-prueba {
+            max-width: 1000px;
+            margin: 40px auto 20px auto;
+            background: linear-gradient(135deg, #1a1c23 0%, #000000 100%);
+            border: 2px solid var(--fluorescente);
+            border-radius: 15px;
+            padding: 45px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .banner-prueba h3 {
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            color: var(--blanco);
+            letter-spacing: 0.5px;
+        }
+
+        .banner-prueba p {
+            color: #bbb;
+            max-width: 650px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .btn-prueba-cta {
+            background: var(--fluorescente);
+            color: #000000;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-prueba-cta:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(212, 255, 0, 0.3);
+        }
+
+        /* --- PIE DE PÁGINA --- */
+        .pie-pagina {
+            background: #000000;
+            padding: 60px 5% 20px 5%;
+            border-top: 1px solid #333;
+            width: 100%;
+        }
+        .grid-footer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .columna-footer h4 { color: var(--fluorescente); text-transform: uppercase; margin-bottom: 20px; font-size: 1rem; }
+        .columna-footer p, .columna-footer a { color: #aaa; text-decoration: none; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .columna-footer a:hover { color: var(--fluorescente); }
+        .contenedor-iframe {
+            width: 100%;
+            height: 160px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .contenedor-iframe iframe { width: 100%; height: 100%; border: 0; }
+        .texto-copyright { text-align: center; padding-top: 40px; color: #555; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 30px; }
+
+        /* --- DISEÑO ADAPTATIVO MÓVIL --- */
+        @media (max-width: 768px) {
+            .cabecera-nav { height: auto; padding: 15px 5%; flex-direction: column; gap: 15px; }
+            .lista-enlaces { width: 100%; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+            .lista-enlaces a { font-size: 0.75rem; }
+            .titulo-principal { font-size: 2rem; }
+            .bloque-tarifas { padding: 40px 5%; }
+            .contenedor-grid { grid-template-columns: 1fr; max-width: 340px; margin-bottom: 40px; }
+            .tabla-seccion { padding: 5px; margin: 40px auto 30px auto; }
+            .subtitulo-extra { font-size: 1.5rem; }
+            .banner-prueba { padding: 35px 20px; }
+            .banner-prueba h3 { font-size: 1.4rem; }
+            .banner-prueba p { font-size: 0.9rem; }
+            .grid-footer { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .contenedor-iframe { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+     <nav class="cabecera-nav">
+        <div class="caja-logo">
+            <a href="Inicio.html">
+                <img src="Img/476EE388-A31A-4EA6-8DFC-3C9BFCCC7760.png" alt="Giro 180º" class="img-logo-giro">
+            </a>
+        </div>
+        <ul class="lista-enlaces">
+            <li><a href="Inicio.html">Inicio</a></li>
+            <li><a href="Tarifas.html" style="color: var(--fluorescente);">Tarifas</a></li>
+            <li><a href="Reservas.html">Reservas</a></li>
+            <li><a href="Conocenos.html">Conócenos</a></li>
+            <li><a href="Club Giro.html">Club Giro</a></li>
+            <li><a href="Giro store.html">Giro Store</a></li>
+        </ul>
+    </nav>
+
+    <div class="bloque-tarifas">
+        <h1 class="titulo-principal">Elige tu tarifa</h1>
+        
+        <div class="contenedor-grid">
+            <!-- Bloque Básico -->
+            <div class="tarjeta-precio">
+                <h2>Básico</h2>
+                <p>1 sesión / semana</p>
+                <div class="numero-precio">90€</div>
+                <a href="Reservas.html" class="btn-tarifa-link" onclick="apuntarCuota('Básico (90€)')">Elegir Tarifa</a>
+            </div>
+
+            <!-- Bloque Medio -->
+            <div class="tarjeta-precio">
+                <h2>Medio</h2>
+                <p>2 sesiones / semana</p>
+                <div class="numero-precio">115€</div>
+                <a href="Reservas.html" class="btn-tarifa-link" onclick="apuntarCuota('Medio (115€)')">Elegir Tarifa</a>
+            </div>
+
+            <!-- Bloque Pro -->
+            <div class="tarjeta-precio">
+                <h2>Pro</h2>
+                <p>3 sesiones / semana</p>
+                <div class="numero-precio">155€</div>
+                <a href="Reservas.html" class="btn-tarifa-link" onclick="apuntarCuota('Pro (155€)')">Elegir Tarifa</a>
+            </div>
+
+            <!-- Bloque Elite -->
+            <div class="tarjeta-precio">
+                <h2>Elite</h2>
+                <p>4 sesiones / semana</p>
+                <div class="numero-precio">190€</div>
+                <a href="Reservas.html" class="btn-tarifa-link" onclick="apuntarCuota('Elite (190€)')">Elegir Tarifa</a>
+            </div>
+        </div>
+
+        <!-- OPCIÓN 1: TABLA COMPARATIVA DE SERVICIOS -->
+        <div class="tabla-seccion">
+            <table class="tabla-giro">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; padding-left: 20px;">Servicios Incluidos</th>
+                        <th>Básico</th>
+                        <th>Medio</th>
+                        <th>Pro</th>
+                        <th>Elite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-servicio">Sesiones de entrenamiento al mes</td>
+                        <td>4</td>
+                        <td>8</td>
+                        <td>12</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td class="col-servicio">Plan de entrenamiento personalizado</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                    </tr>
+                    <tr>
+                        <td class="col-servicio">Uso completo de taquilla y duchas</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                    </tr>
+                    <tr>
+                        <td class="col-servicio">Cancelación flexible (aviso 24h)</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                        <td class="check-ok">✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- OPCIÓN 2: FAQs DE PAGOS -->
+        <div class="bloque-dudas-pagos">
+            <h3 class="subtitulo-extra">Preguntas sobre las cuotas</h3>
+            
+            <div class="item-duda">
+                <h4>¿Hay compromiso de permanencia en las cuotas?</h4>
+                <p>No, ninguna de nuestras tarifas tiene permanencia. Puedes darte de baja o modificar tu tipo de suscripción para el mes siguiente avisando en recepción antes del fin del mes en curso.</p>
+            </div>
+
+            <div class="item-duda">
+                <h4>¿Cómo se realizan los cobros mensuales?</h4>
+                <p>Para tu comodidad, las cuotas se gestionan de forma mensual el primer día de cada mes mediante domiciliación bancaria o pago directo con tarjeta en el propio centro de Pino Montano.</p>
+            </div>
+
+            <div class="item-duda">
+                <h4>¿Qué ocurre si no puedo asistir a una sesión?</h4>
+                <p>Si cancelas tu reserva con un mínimo de 24 horas de antelación a través de nuestros canales de atención, la sesión no se perderá y podrás recuperarla dentro del mismo mes corriente.</p>
+            </div>
+        </div>
+
+        <!-- OPCIÓN 3: BANNER DE SESIÓN DE PRUEBA GRATUITA -->
+        <div class="banner-prueba">
+            <h3>¿No sabes qué tarifa elegir?</h3>
+            <p>Ven a conocernos a nuestro centro de Pino Montano. Te ofrecemos una primera sesión de valoración funcional completamente gratuita y sin ningún tipo de compromiso para orientarte hacia tu cuota ideal.</p>
+            <a href="Reservas.html" class="btn-prueba-cta">Reservar Valoración Inicial Gratis</a>
+        </div>
+    </div>
+
+    <footer class="pie-pagina">
+        <div class="grid-footer">
+            <div class="columna-footer">
+                <h4>Ubicación</h4>
+                <p><strong>Giro 180º</strong><br>C. Astronomía, 1, local 106<br>Norte, 41015 Pino Montano<br>Sevilla, España</p>
+            </div>
+            <div class="columna-footer">
+                <h4>Contacto</h4>
+                <p>Tel: <a href="tel:+34641561541" style="color: #aaa; display: inline;">+34 641 56 15 41</a></p>
+                <p>Email: <a href="mailto:Giro180o@gmail.com" style="color: #aaa; display: inline;">Giro180º@gmail.com</a></p>
+            </div>
+            <div class="columna-footer">
+                <h4>Redes</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="columna-footer">
+                <h4>Ver en el mapa</h4>
+                <div class="contenedor-iframe">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.1691340156994!2d-5.969850123617303!3d37.433100331821815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126c06a38cf02f%3A0x6bcf36a57c9df25f!2sGIRO%20180!5e0!3m2!1ses!2ses!4v1716405000000!5m2!1ses!2ses" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        <div class="texto-copyright">
+            &copy; 2026 Giro 180º. Dale un giro a tu vida.
+        </div>
+    </footer>
+
+    <!-- FUNCIÓN MEMORIA HUMANA -->
+    <script>
+        function apuntarCuota(nombreDeSuscripcion) {
+            localStorage.setItem("tarifaSeleccionada", nombreDeSuscripcion);
+        }
+    </script>
+</body>
+</html>
+

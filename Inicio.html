@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Giro 180º | Inicio</title>
+    <!-- Importación de Google Fonts corregida para garantizar la carga de la tipografía Inter -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================
+           MIS VARIABLES DE COLOR - GIRO 180º
+           ========================================================== */
+        :root { 
+            --text: #ffffff; 
+            --surface: #191b1f; /* Gris oscuro premium uniforme */
+            --primary: #d4ff00; /* El verde fosforito del gimnasio */
+            --bg: #121212; 
+            --antracita: #2c2e35;
+        }
+        
+        /* Limpieza general para quitar márgenes por defecto del navegador */
+        * { 
+            font-family: 'Inter', sans-serif; 
+            box-sizing: border-box; 
+            padding: 0; 
+            margin: 0; 
+        }
+        
+        body { 
+            color: var(--text); 
+            background: var(--bg); 
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden; 
+        }
+
+        /* --- BARRA DE NAVEGACIÓN (CABECERA) --- */
+        nav { 
+            padding: 0 5%; 
+            display: flex; 
+            background: #000000; 
+            border-bottom: 1px solid #333; 
+            height: 80px; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+        }
+
+        .logo { 
+            display: flex; 
+            align-items: center; 
+        }
+        
+        .nav-logo-img { 
+            object-fit: contain; 
+            height: 55px; 
+            width: auto; 
+            transition: transform 0.3s ease; 
+        }
+        
+        .nav-logo-img:hover { 
+            transform: scale(1.05); 
+        }
+
+        .nav-list { 
+            display: flex; 
+            list-style: none; 
+            gap: 1.5rem; 
+        }
+        
+        .nav-list a { 
+            color: #ffffff; 
+            font-size: 0.8rem; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            text-decoration: none; 
+        }
+        
+        .nav-list a:hover { 
+            color: var(--primary); 
+        }
+
+        /* --- PANTALLA PRINCIPAL (HERO CENTRADO Y RECTO) --- */
+        .hero { 
+            background: var(--antracita); 
+            /* Sutil patrón de rejilla deportiva unificado con el resto de la web */
+            background-image: linear-gradient(rgba(212, 255, 0, 0.015) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(212, 255, 0, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center top;
+            display: flex; 
+            justify-content: center; 
+            min-height: calc(100vh - 80px); 
+            align-items: center; 
+            padding: 80px 5%;
+        }
+
+        .hero-layout {
+            width: 100%;
+            max-width: 1000px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-content {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            flex: 1;
+        }
+
+        /* --- CONTEMEDOR DEL CARRUSEL OPTIMIZADO --- */
+        .zona-carrusel {
+            height: 520px; 
+            width: 100%; 
+            position: relative;
+            max-width: 1000px; 
+            border: 1px solid #2a2d34;
+            margin-bottom: 40px;
+            overflow: hidden;
+            background: var(--surface);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .foto-bucle {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            z-index: 1;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .foto-bucle::after {
+            content: '';
+            position: absolute;
+            width: 100%; 
+            height: 100%;
+            top: 0; 
+            left: 0; 
+            background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+        }
+
+        .foto-bucle.active { 
+            opacity: 1; 
+            z-index: 2; 
+        }
+
+        /* Botones de las flechas del carrusel */
+        .arrow {
+            width: 48px;
+            height: 48px;
+            color: #ffffff;
+            background: rgba(0,0,0,0.6);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 1.2rem;
+            z-index: 10;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .arrow:hover, .arrow:active { 
+            background: var(--primary); 
+            color: #000000; 
+            border-color: var(--primary);
+        }
+
+        .prev { left: 20px; }
+        .next { right: 20px; }
+
+        h1 { 
+            color: var(--text);
+            font-size: 3.5rem; 
+            margin-bottom: 30px; 
+            text-transform: uppercase; 
+            line-height: 1.1; 
+            font-weight: 900;
+            letter-spacing: -1px;
+            padding: 0 10px;
+        }
+
+        /* BOTÓN DE ACCIÓN LLAMATIVO */
+        .btn { 
+            color: #000000; 
+            background: var(--primary); 
+            padding: 18px 55px; 
+            text-decoration: none; 
+            border-radius: 10px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            display: inline-block; 
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(212, 255, 0, 0.3);
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .btn:hover, .btn:active { 
+            background: transparent;
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(212, 255, 0, 0.4); 
+            transform: translateY(-3px);
+        }
+
+        /* --- SECCIÓN DE LOS TRES PILARES --- */
+        .pilares-section {
+            padding: 90px 5%;
+            width: 100%;
+            background: var(--bg);
+            text-align: center;
+            border-top: 1px solid #2a2d34;
+        }
+
+        .section-title {
+            margin-bottom: 50px;
+            font-size: 2.3rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+
+        .pilares-grid {
+            display: grid;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 35px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .bloque-pilar {
+            padding: 45px 30px;
+            background: var(--surface);
+            border: 1px solid #2a2d34;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .bloque-pilar:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(212, 255, 0, 0.1);
+        }
+
+        .pilar-icon {
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 0 10px rgba(212, 255, 0, 0.2));
+        }
+
+        .bloque-pilar h3 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .bloque-pilar p {
+            color: #a0a5b0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* --- SECCIÓN DE VALORACIONES RECUPERADA Y OPTIMIZADA --- */
+        .reviews-section {
+            padding: 90px 5%;
+            background: var(--antracita);
+            text-align: center;
+            border-top: 1px solid #2a2d34;
+        }
+
+        .reviews-grid {
+            display: grid;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .review-card {
+            background: var(--surface);
+            border: 1px solid #2a2d34;
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .review-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .stars-container {
+            color: var(--primary);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+
+        .review-text {
+            color: #ced4da;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-style: italic;
+            flex-grow: 1;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 15px;
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .reviewer-meta {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- PIE DE PÁGINA TOTALMENTE RECTO HORIZONTAL --- */
+        footer {
+            background: #000000;
+            padding: 80px 5% 30px 5%;
+            border-top: 1px solid #2a2d34;
+            width: 100%;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 { 
+            color: var(--primary); 
+            text-transform: uppercase; 
+            margin-bottom: 20px; 
+            font-size: 1rem; 
+            letter-spacing: 0.5px; 
+        }
+
+        .footer-col p, .footer-col a { 
+            color: #aaa; 
+            text-decoration: none; 
+            font-size: 0.9rem; 
+            margin-bottom: 10px; 
+            display: block; 
+        }
+
+        .footer-col a:hover { 
+            color: var(--primary); 
+        }
+
+        /* Modificaciones en la columna de ubicación */
+        .footer-map { 
+            min-width: 260px; 
+        }
+
+        .text-ubicacion {
+            font-size: 0.85rem !important;
+            color: #eee !important;
+            line-height: 1.5;
+            margin-bottom: 15px !important;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 160px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .map-container iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: 0; 
+        }
+
+        .copyright { 
+            text-align: center; 
+            padding-top: 40px; 
+            color: #555; 
+            font-size: 0.8rem; 
+            border-top: 1px solid #222; 
+            margin-top: 30px; 
+        }
+
+        /* --- MEDIA QUERIES RESPONSIVE --- */
+        @media (max-width: 768px) {
+            nav { height: auto; padding: 15px 5%; flex-direction: column; gap: 15px; }
+            .nav-list { width: 100%; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+            .nav-list a { font-size: 0.75rem; }
+            
+            .hero { padding: 60px 5%; }
+            h1 { font-size: 2.4rem; margin-bottom: 20px; }
+            .zona-carrusel { height: 380px; margin-bottom: 30px; }
+            .btn { padding: 15px 40px; font-size: 0.95rem; }
+            
+            .pilares-section, .reviews-section { padding: 60px 5%; }
+            .section-title { font-size: 1.8rem; margin-bottom: 35px; }
+            .pilares-grid, .reviews-grid { grid-template-columns: 1fr; max-width: 350px; margin: 0 auto; }
+            
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .map-container { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <nav>
+        <div class="logo">
+            <a href="Inicio.html">
+                <img src="Img/476EE388-A31A-4EA6-8DFC-3C9BFCCC7760.png" alt="Giro 180º Logo" class="nav-logo-img">
+            </a>
+        </div>
+        <ul class="nav-list">
+            <li><a href="Inicio.html" style="color: var(--primary);">Inicio</a></li>
+            <li><a href="Tarifas.html">Tarifas</a></li>
+            <li><a href="Reservas.html">Reservas</a></li>
+            <li><a href="Conocenos.html">Conócenos</a></li>
+            <li><a href="Club Giro.html">Club Giro</a></li>
+            <li><a href="Giro store.html">Giro Store</a></li>
+        </ul>
+    </nav>
+
+    <!-- SECCIÓN PRINCIPAL HERO CENTRADA -->
+    <section class="hero">
+        <div class="hero-layout">
+            <div class="hero-content">
+                 
+                <!-- El Carrusel de Fotos Reales centrado -->
+                <div class="zona-carrusel">
+                    <!-- Botones de navegación del carrusel -->
+                    <button class="arrow prev" onclick="changeSlide(-1)">&lt;</button>
+                    <button class="arrow next" onclick="changeSlide(1)">&gt;</button>
+                    
+                    <!-- Diapositivas de fondo configuradas -->
+                    <div class="foto-bucle active" style="background-image: url('Img/gimnasio-principal.jpg');"></div>
+                    <div class="foto-bucle" style="background-image: url('Img/entrenamiento-personal.jpg');"></div>
+                    <div class="foto-bucle" style="background-image: url('Img/comunidad-giro.jpg');"></div>
+                </div>
+
+                <!-- Eslogan e información comercial inferior -->
+                <h1>¡Dale un giro a tu vida<br>con entrenadores para ti!</h1>
+                <a href="Reservas.html" class="btn">¡Empezamos!</a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE LOS TRES PILARES -->
+    <section class="pilares-section">
+        <h2 class="section-title">Nuestra Filosofía</h2>
+        
+        <div class="pilares-grid">
+            <!-- Pilar 1 -->
+            <div class="bloque-pilar">
+                <div class="pilar-icon">🎯</div>
+                <h3>Personalización</h3>
+                <p>Cada cuerpo y mentalidad son únicos. Diseñamos planes a medida adaptados exclusivamente a tus necesidades individuales.</p>
+            </div>
+
+            <!-- Pilar 2 -->
+            <div class="bloque-pilar">
+                <div class="pilar-icon">🧠</div>
+                <h3>Mentalidad</h3>
+                <p>El cambio físico empieza en la disciplina. Te enseñamos a construir hábitos sólidos para derribar cualquier barrera.</p>
+            </div>
+
+            <!-- Pilar 3 -->
+            <div class="bloque-pilar">
+                <div class="pilar-icon">👥</div>
+                <h3>Comunidad</h3>
+                <p>Mucho más que un gimnasio en Sevilla. Formarás parte de un grupo activo que te impulsará a superarte cada día.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE VALORACIONES (RECUPERADA) -->
+    <section class="reviews-section">
+        <h2 class="section-title">Lo que dicen de nosotros</h2>
+        
+        <div class="reviews-grid">
+            <!-- Opinión 1 -->
+            <div class="review-card">
+                <div class="stars-container">★★★★★</div>
+                <p class="review-text">"El mejor centro de entrenamiento de Pino Montano. Los entrenadores están encima de ti en cada ejercicio corrigiendo la postura y motivándote."</p>
+                <div class="reviewer-info">
+                    <div>
+                        <div class="reviewer-name">Manuel R.</div>
+                        <div class="reviewer-meta">Alumno Giro Club</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opinión 2 -->
+            <div class="review-card">
+                <div class="stars-container">★★★★★</div>
+                <p class="review-text">"Buscaba un cambio real y aquí lo he encontrado. Entrenamientos dinámicos y un ambiente espectacular. ¡Giro de 180 grados asegurado!"</p>
+                <div class="reviewer-info">
+                    <div>
+                        <div class="reviewer-name">Laura S.</div>
+                        <div class="reviewer-meta">Alumna Giro Club</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opinión 3 -->
+            <div class="review-card">
+                <div class="stars-container">★★★★★</div>
+                <p class="review-text">"Instalaciones cuidadas al detalle y profesionales brutales. Se nota cuando alguien ama su trabajo y sabe de ciencia deportiva."</p>
+                <div class="reviewer-info">
+                    <div>
+                        <div class="reviewer-name">Carlos T.</div>
+                        <div class="reviewer-meta">Alumno Giro Club</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIE DE PÁGINA TOTALMENTE RECTO HORIZONTAL -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Giro 180º</h4>
+                <p>Tu centro de entrenamiento personal en Sevilla. Redefiniendo el concepto de fitness y comunidad activa.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Enlaces</h4>
+                <a href="Inicio.html">Inicio</a>
+                <a href="Tarifas.html">Tarifas</a>
+                <a href="Reservas.html">Reservas</a>
+            </div>
+            <div class="footer-col footer-map">
+                <h4>Ubicación</h4>
+                <!-- Dirección física real y horarios de GIRO 180 -->
+                <p class="text-ubicacion">
+                    📍 C. Astronomía, 1, Local 106<br>
+                    41015 Pino Montano, Sevilla<br>
+                    ⏰ Lun - Jue: 8:00 - 21:00<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vie: 8:00 - 20:00 (S-D Cerrado)
+                </p>
+                <!-- Mapa embebido oficial con el pin exacto fijado en tu centro GIRO 180 -->
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.1691340156994!2d-5.969850123617303!3d37.433100331821815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126c06a38cf02f%3A0x6bcf36a57c9df25f!2sGIRO%20180!5e0!3m2!1ses!2ses!4v1716405000000!5m2!1ses!2ses" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Giro 180º. Todos los derechos reservados. Pino Montano, Sevilla.
+        </div>
+    </footer>
+
+    <!-- SCRIPT DE CONTROL PARA EL CARRUSEL DINÁMICO -->
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.foto-bucle');
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Cambio automático de fotos cada 5 segundos para dar dinamismo
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Giro 180º | Gestión de Reservas</title>
+    <!-- Importación manual de fuentes tipográficas -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Paleta de colores corporativos del box */
+        :root { 
+            --fluorescente: #d4ff00; 
+            --fondo-oscuro: #121212; 
+            --tarjeta-bg: #1e1e1e; 
+            --blanco: #ffffff; 
+            --gris-medio: #2c2e35;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        body { 
+            background: var(--fondo-oscuro); 
+            color: var(--blanco); 
+            -webkit-font-smoothing: antialiased; 
+        }
+
+        /* --- MENÚ SUPERIOR DE ENLACES --- */
+        .cabecera-nav { 
+            height: 80px; 
+            padding: 0 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: #000000; 
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .caja-logo { display: flex; align-items: center; }
+        .img-logo-giro { 
+            height: 55px; 
+            width: auto; 
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .img-logo-giro:hover { transform: scale(1.05); }
+
+        .lista-enlaces { display: flex; list-style: none; gap: 1.5rem; }
+        .lista-enlaces a { 
+            text-decoration: none; 
+            color: #fff; 
+            font-weight: bold; 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+        }
+        .lista-enlaces a:hover { color: var(--fluorescente); }
+
+        /* --- CUERPO PRINCIPAL --- */
+        .bloque-principal { 
+            padding: 60px 5%; 
+            text-align: center; 
+            background: var(--gris-medio); 
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .titulo-seccion { 
+            font-size: 2.5rem; 
+            text-transform: uppercase; 
+            margin-bottom: 10px; 
+        }
+
+        .bloque-principal > p { 
+            color: #bbb; 
+            font-size: 1rem; 
+            margin-bottom: 5px; 
+            padding: 0 10px; 
+        }
+
+        .aviso-viernes {
+            color: var(--fluorescente);
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 35px;
+        }
+
+        /* Contenedor Flex para organizar el formulario y la información a los lados en PC */
+        .distribucion-layout {
+            display: flex;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 50px;
+        }
+
+        .formulario-caja { 
+            width: 100%;
+            max-width: 460px; 
+            background: var(--tarjeta-bg); 
+            padding: 35px 25px; 
+            border-radius: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            border: 1px solid #444;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        input, select { 
+            padding: 14px; 
+            border-radius: 6px; 
+            background: #2a2a2a; 
+            color: #ffffff; 
+            font-size: 0.95rem;
+            border: 1px solid #444; 
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        input:focus, select:focus { 
+            border-color: var(--fluorescente); 
+        }
+
+        input::placeholder { color: #888; }
+
+        select {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='12' height='12' fill='%23d4ff00'><path d='M0 3h12L6 10z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        select option[disabled] {
+            color: var(--fluorescente) !important;
+            background: #1a1a1a;
+            font-weight: bold;
+        }
+
+        .btn-enviar-reserva { 
+            background: var(--fluorescente); 
+            color: black; 
+            padding: 16px; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 900; 
+            text-transform: uppercase;
+            font-size: 1rem;
+            cursor: pointer; 
+            transition: transform 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-enviar-reserva:hover { transform: scale(1.02); }
+
+        /* --- NUEVO BLOQUE LATERAL: PASOS E INFORMACIÓN --- */
+        .panel-lateral-info {
+            flex: 1;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            text-align: left;
+        }
+
+        .bloque-pasos {
+            background: var(--tarjeta-bg);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .bloque-pasos h3 {
+            color: var(--fluorescente);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #2d2d2d;
+            padding-bottom: 8px;
+        }
+
+        .paso-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 18px;
+            align-items: flex-start;
+        }
+        .pilar-num {
+            background: #2a2a2a;
+            color: var(--fluorescente);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 1px solid var(--fluorescente);
+            flex-shrink: 0;
+        }
+        .paso-texto h4 { font-size: 1rem; color: #fff; margin-bottom: 3px; }
+        .paso-texto p { font-size: 0.85rem; color: #aaa; line-height: 1.4; }
+
+        .caja-recordatorio {
+            background: #1a1c23;
+            border: 1px dashed var(--fluorescente);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .caja-recordatorio h4 { color: #fff; font-size: 1rem; text-transform: uppercase; margin-bottom: 6px; }
+        .caja-recordatorio p { font-size: 0.85rem; color: #ccc; line-height: 1.5; }
+
+        /* --- PIE DE PÁGINA --- */
+        .pie-pagina {
+            background: #000000;
+            padding: 60px 5% 20px 5%;
+            border-top: 1px solid #333;
+            width: 100%;
+        }
+
+        .grid-footer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .columna-footer h4 { color: var(--fluorescente); text-transform: uppercase; margin-bottom: 20px; font-size: 1rem; }
+        .columna-footer p, .columna-footer a { color: #aaa; text-decoration: none; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .columna-footer a:hover { color: var(--fluorescente); }
+        .contenedor-iframe {
+            width: 100%;
+            height: 160px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .contenedor-iframe iframe { width: 100%; height: 100%; border: 0; }
+        .texto-copyright { text-align: center; padding-top: 40px; color: #555; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 30px; }
+
+        /* --- DISEÑO ADAPTATIVO MÓVIL --- */
+        @media (max-width: 768px) {
+            .cabecera-nav { height: auto; padding: 15px 5%; flex-direction: column; gap: 15px; }
+            .lista-enlaces { width: 100%; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+            .lista-enlaces a { font-size: 0.75rem; }
+            .titulo-seccion { font-size: 2rem; }
+            .bloque-principal { padding: 40px 5%; }
+            .distribucion-layout { flex-direction: column; align-items: center; gap: 30px; }
+            .formulario-caja { max-width: 350px; }
+            .panel-lateral-info { max-width: 350px; }
+            .grid-footer { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .contenedor-iframe { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="cabecera-nav">
+        <div class="caja-logo">
+            <a href="Inicio.html">
+                <img src="Img/476EE388-A31A-4EA6-8DFC-3C9BFCCC7760.png" alt="Giro 180º Logo" class="img-logo-giro">
+            </a>
+        </div>
+        <ul class="lista-enlaces">
+            <li><a href="Inicio.html">Inicio</a></li>
+            <li><a href="Tarifas.html">Tarifas</a></li>
+            <li><a href="Reservas.html" style="color: var(--fluorescente);">Reservas</a></li>
+            <li><a href="Conocenos.html">Conócenos</a></li>
+            <li><a href="Club Giro.html">Club Giro</a></li>
+            <li><a href="Giro store.html">Giro Store</a></li>
+        </ul>
+    </nav>
+
+    <div class="bloque-principal">
+        <h1 class="titulo-seccion">Reserva tu Sesión</h1>
+        <p>Elige tu mejor momento para empezar a entrenar en Giro 180º.</p>
+        <div class="aviso-viernes">Viernes: solo hasta las 20:00</div>
+        
+        <!-- DISEÑO EN DOS COLUMNAS ASÍNCRONAS -->
+        <div class="distribucion-layout">
+            
+            <!-- COLUMNA IZQUIERDA: FORMULARIO INTERACTIVO -->
+            <form id="formularioReserva" class="formulario-caja">
+                <input type="text" id="nombreCliente" placeholder="Tu Nombre Completo" required>
+                <input type="email" id="emailCliente" placeholder="Correo Electrónico" required>
+                <input type="date" id="fechaReserva" required>
+                
+                <select id="horarioSelector" required>
+                    <option value="">Selecciona horario</option>
+                    <option disabled>-- HORARIOS DISPONIBLES --</option>
+                    <option value="09:00 a 10:00">09:00 a 10:00</option>
+                    <option value="10:00 a 11:00">10:00 a 11:00</option>
+                    <option value="11:00 a 12:00">11:00 a 12:00</option>
+                    <option value="12:00 a 13:00">12:00 a 13:00</option>
+                    <option value="13:00 a 14:00">13:00 a 14:00</option>
+                    <option value="14:00 a 15:00">14:00 a 15:00</option>
+                    <option value="15:00 a 16:00">15:00 a 16:00</option>
+                    <option value="16:00 a 17:00">16:00 a 17:00</option>
+                    <option value="17:00 a 18:00">17:00 a 18:00</option>
+                    <option value="18:00 a 19:00">18:00 a 19:00</option>
+                    <option value="19:00 a 20:00">19:00 a 20:00</option>
+                    <option value="20:00 a 21:00" id="ultimaHora">20:00 a 21:00</option>
+                </select>
+                
+                <button type="submit" class="btn-enviar-reserva">Confirmar Reserva</button>
+            </form>
+
+            <!-- COLUMNA DERECHA: FLUJO DE PASOS DE USUARIO -->
+            <div class="panel-lateral-info">
+                <div class="bloque-pasos">
+                    <h3>¿Cómo funciona el proceso?</h3>
+                    
+                    <div class="paso-item">
+                        <div class="pilar-num">1</div>
+                        <div class="paso-texto">
+                            <h4>Rellena el cuadrante</h4>
+                            <p>Introduce tu nombre de contacto, correo electrónico y selecciona el día y tramo que prefieras.</p>
+                        </div>
+                    </div>
+
+                    <div class="paso-item">
+                        <div class="pilar-num">2</div>
+                        <div class="paso-texto">
+                            <h4>Validación en WhatsApp</h4>
+                            <p>Al pulsar el botón, el sistema unificará tus datos y abrirá nuestra vía de atención directa en un clic.</p>
+                        </div>
+                    </div>
+
+                    <div class="paso-item">
+                        <div class="pilar-num">3</div>
+                        <div class="paso-texto">
+                            <h4>Confirmación de plaza</h4>
+                            <p>Tu entrenador revisará el estado del aforo del box y te asignará la plaza de inmediato.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="caja-recordatorio">
+                    <h4>⚠️ Recordatorio Importante</h4>
+                    <p>Las cancelaciones o modificaciones de citas deben gestionarse con un mínimo de 24 horas de antelación para poder reagendar la sesión dentro del mes corriente.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="pie-pagina">
+        <div class="grid-footer">
+            <div class="columna-footer">
+                <h4>Ubicación</h4>
+                <p><strong>Giro 180º</strong><br>C. Astronomía, 1, local 106<br>Norte, 41015 Pino Montano<br>Sevilla, España</p>
+            </div>
+            <div class="columna-footer">
+                <h4>Contacto</h4>
+                <p>Tel: <a href="tel:+34641561541" style="color: #aaa; display: inline;">+34 641 56 15 41</a></p>
+                <p>Email: <a href="mailto:Giro180o@gmail.com" style="color: #aaa; display: inline;">Giro180º@gmail.com</a></p>
+            </div>
+            <div class="columna-footer">
+                <h4>Redes</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="columna-footer">
+                <h4>Ver en el mapa</h4>
+                <div class="contenedor-iframe">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.1691340156994!2d-5.969850123617303!3d37.433100331821815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126c06a38cf02f%3A0x6bcf36a57c9df25f!2sGIRO%20180!5e0!3m2!1ses!2ses!4v1716405000000!5m2!1ses!2ses" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        <div class="texto-copyright">
+            &copy; 2026 Giro 180º. Dale un giro a tu vida.
+        </div>
+    </footer>
+
+    <!-- LÓGICA DE CONTROL DE RESERVAS CON MEMORIA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const fechaInput = document.getElementById("fechaReserva");
+            const ultimaHoraOpcion = document.getElementById("ultimaHora");
+            const selector = document.getElementById("horarioSelector");
+            const formulario = document.getElementById("formularioReserva");
+
+            // 1. FILTRO AUTOMÁTICO PARA OCULTAR LA ÚLTIMA HORA LOS VIERNES
+            fechaInput.addEventListener("change", () => {
+                const dateParts = fechaInput.value.split("-");
+                if (dateParts.length !== 3) return;
+                
+                const fechaSeleccionada = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                const diaSemana = fechaSeleccionada.getDay(); // 5 representa el Viernes
+
+                if (diaSemana === 5) {
+                    ultimaHoraOpcion.style.display = "none";
+                    if (selector.value === "20:00 a 21:00") {
+                        selector.value = ""; 
+                    }
+                } else {
+                    ultimaHoraOpcion.style.display = "block";
+                }
+            });
+
+            // 2. DISPARADOR DE ENVÍO DIRECTO A WHATSAPP CON TARIFA PERSISTENTE
+            formulario.addEventListener("submit", (evento) => {
+                evento.preventDefault(); 
+
+                const nombre = document.getElementById("nombreCliente").value;
+                const email = document.getElementById("emailCliente").value;
+                const fecha = fechaInput.value;
+                const hora = selector.value;
+
+                // Recupera la cuota guardada en localStorage si el usuario viene de Tarifas
+                const tarifa = localStorage.getItem("tarifaSeleccionada") || "No especificada / Sesión de prueba";
+
+                const idDelTelefono = "34641561541"; 
+
+                // Redacción limpia del mensaje codificado para la API
+                const cuerpoTexto = `¡Hola Giro 180º! 👋 Quiero confirmar una nueva reserva de entrenamiento:\n\n` +
+                                     `👤 *Nombre:* ${nombre}\n` +
+                                     `📧 *Email:* ${email}\n` +
+                                     `💳 *Tarifa Interés:* ${tarifa}\n` +
+                                     `📅 *Fecha:* ${fecha}\n` +
+                                     `⏰ *Horario:* ${hora}`;
+
+                const enlaceWhatsapp = `https://whatsapp.com{idDelTelefono}&text=${encodeURIComponent(cuerpoTexto)}`;
+
+                // Limpia la memoria local para mantener el navegador ordenado
+                localStorage.removeItem("tarifaSeleccionada");
+
+                window.open(enlaceWhatsapp, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>

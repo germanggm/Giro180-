@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Giro 180º | Giro Store</title>
+    <!-- Importación de Google Fonts corregida para garantizar la carga de la tipografía Inter -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --primary: #d4ff00; 
+            --bg: #121212; 
+            --surface: #191b1f; /* Gris oscuro premium uniforme */
+            --text: #ffffff; 
+            --antracita: #2c2e35;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            -webkit-font-smoothing: antialiased; 
+        }
+
+        /* --- NAVEGACIÓN --- */
+        nav { 
+            height: 80px; 
+            padding: 0 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: #000000; 
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { 
+            display: flex; 
+            align-items: center; 
+        }
+
+        .nav-logo-img { 
+            height: 55px; 
+            width: auto; 
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo-img:hover { 
+            transform: scale(1.05); 
+        }
+
+        .nav-list { 
+            display: flex; 
+            list-style: none; 
+            gap: 1.5rem; 
+        }
+
+        .nav-list a { 
+            text-decoration: none; 
+            color: #fff; 
+            font-weight: bold; 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+        }
+
+        .nav-list a:hover { 
+            color: var(--primary); 
+        }
+
+        /* --- CONTENIDO DE LA TIENDA (DISEÑO PREMIUM RECTO) --- */
+        .store-info { 
+            padding: 90px 5% 90px 5%; 
+            text-align: center; 
+            background-color: var(--antracita);
+            /* Sutil entramado de fondo estilo rejilla deportiva */
+            background-image: linear-gradient(rgba(212, 255, 0, 0.015) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(212, 255, 0, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center top;
+            min-height: calc(100vh - 80px);
+        }
+
+        .store-header {
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+        }
+
+        .store-tag {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        h1 { 
+            color: var(--text); 
+            font-size: 3.8rem; 
+            margin-bottom: 20px; 
+            text-transform: uppercase; 
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .title-divider {
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 0 auto 25px auto;
+            border-radius: 2px;
+        }
+
+        .store-info > p { 
+            color: #ced4da; 
+            font-size: 1.25rem; 
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* --- ANIMACIONES DE ENTRADA SUAVE --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Rejilla de productos */
+        .product-grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 35px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto; 
+        }
+        
+        /* Tarjetas de productos */
+        .product-card {
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid #2a2d34;
+            color: #ccc;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        /* Aparición escalonada de artículos */
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Efecto Glow Perimetral al pasar el cursor */
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(212, 255, 0, 0.15);
+        }
+
+        .product-image-wrapper {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            background: #121212; /* Fondo oscuro integrado para fotos transparentes o reales */
+            position: relative;
+            border-bottom: 1px solid #2a2d34;
+        }
+
+        .product-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            object-position: center;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: block;
+        }
+
+        .product-card:hover .product-image-wrapper img {
+            transform: scale(1.06);
+        }
+
+        /* ETIQUETAS DE STOCK O NOVEDAD (BADGES) */
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .product-badge.new {
+            background: var(--primary);
+            color: #000000;
+        }
+
+        .product-badge.top {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        /* Bloque de textos internos */
+        .product-text-block {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-grow: 1;
+        }
+
+        .product-card .title {
+            font-size: 1.3rem;
+            color: #fff;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-description {
+            font-size: 0.95rem;
+            color: #a0a5b0;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* Distribución limpia de precio y botones */
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #2a2d34;
+        }
+
+        .product-price {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #ffffff; /* Blanco para no saturar con el amarillo flúor */
+        }
+
+        /* BOTÓN DE RESERVA POTENTE */
+        .buy-btn {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid var(--primary);
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .product-card:hover .buy-btn {
+            background: var(--primary);
+            color: #000000;
+            box-shadow: 0 5px 20px rgba(212, 255, 0, 0.3);
+        }
+
+        /* --- PIE DE PÁGINA COMPLETAMENTE RECTO --- */
+        footer {
+            background: #000000;
+            padding: 80px 5% 30px 5%;
+            border-top: 1px solid #2a2d34;
+            width: 100%;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 { 
+            color: var(--primary); 
+            text-transform: uppercase; 
+            margin-bottom: 20px; 
+            font-size: 1rem; 
+            letter-spacing: 0.5px; 
+        }
+
+        .footer-col p, .footer-col a { 
+            color: #aaa; 
+            text-decoration: none; 
+            font-size: 0.9rem; 
+            margin-bottom: 10px; 
+            display: block; 
+        }
+
+        .footer-col a:hover { 
+            color: var(--primary); 
+        }
+
+        .footer-map { 
+            min-width: 260px; 
+        }
+
+        .map-container {
+            width: 100%;
+            height: 160px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .map-container iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: 0; 
+        }
+
+        .copyright { 
+            text-align: center; 
+            padding-top: 40px; 
+            color: #555; 
+            font-size: 0.8rem; 
+            border-top: 1px solid #222; 
+            margin-top: 30px; 
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            nav { height: auto; padding: 15px 5%; flex-direction: column; gap: 15px; }
+            .nav-list { width: 100%; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+            .nav-list a { font-size: 0.75rem; }
+            
+            .store-info { padding: 60px 5% 60px 5%; }
+            .store-header h1 { font-size: 2.4rem; }
+            .store-header p { font-size: 1.05rem; }
+            
+            .product-grid { grid-template-columns: 1fr; gap: 25px; max-width: 350px; margin: 0 auto; }
+            .product-image-wrapper { height: 240px; }
+            .product-text-block { padding: 25px; }
+            
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .map-container { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVEGACIÓN -->
+    <nav>
+        <div class="logo">
+            <a href="Inicio.html">
+                <img src="Img/476EE388-A31A-4EA6-8DFC-3C9BFCCC7760.png" alt="Giro 180º Logo" class="nav-logo-img">
+            </a>
+        </div>
+        <ul class="nav-list">
+            <li><a href="Inicio.html">Inicio</a></li>
+            <li><a href="Tarifas.html">Tarifas</a></li>
+            <li><a href="Reservas.html">Reservas</a></li>
+            <li><a href="Conocenos.html">Conócenos</a></li>
+            <li><a href="Club Giro.html">Club Giro</a></li>
+            <li><a href="Giro store.html" style="color: var(--primary);">Giro Store</a></li>
+        </ul>
+    </nav>
+
+    <!-- SECCIÓN DE LA TIENDA -->
+    <div class="store-info">
+        
+        <!-- Bloque de Cabecera Estilizado -->
+        <div class="store-header">
+            <span class="store-tag">Giro Merchandising</span>
+            <h1>Giro Store</h1>
+            <div class="title-divider"></div>
+            <p>Equípate con el merchandising oficial y personalizado de Giro 180º. Ropa y accesorios técnicos de alta calidad diseñados para rendir al máximo dentro y fuera del gimnasio.</p>
+        </div>
+        
+        <!-- Cuadrícula de Productos -->
+        <div class="product-grid">
+            <!-- Camiseta Técnica -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <span class="product-badge top">Top Ventas</span>
+                    <!-- Ruta de tu imagen real dentro de Img/ -->
+                    <img src="Img/camiseta-tecnica.jpg" alt="Camiseta Técnica Oficial Giro 180º">
+                </div>
+                <div class="product-text-block">
+                    <div class="title">Camiseta Técnica Oficial</div>
+                    <p class="product-description">Tejido transpirable de alta calidad, óptimo para entrenamientos intensos. Logotipo bordado de alta durabilidad.</p>
+                    <div class="product-footer">
+                        <div class="product-price">19,99€</div>
+                        <button class="buy-btn" onclick="window.location.href='Reservas.html'">Reservar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sudadera Giro Hoodie -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <span class="product-badge new">Nuevo</span>
+                    <img src="Img/sudadera-hoodie.jpg" alt="Sudadera Giro Hoodie">
+                </div>
+                <div class="product-text-block">
+                    <div class="title">Sudadera Giro Hoodie</div>
+                    <p class="product-description">Sudadera con capucha y bolsillo de canguro. Interior felpado ultra suave para mantener de forma óptima la temperatura.</p>
+                    <div class="product-footer">
+                        <div class="product-price">34,99€</div>
+                        <button class="buy-btn" onclick="window.location.href='Reservas.html'">Reservar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botella de Aluminio -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <span class="product-badge new">Nuevo</span>
+                    <img src="Img/botella-aluminio.jpg" alt="Botella de Aluminio Giro 180º">
+                </div>
+                <div class="product-text-block">
+                    <div class="title">Botella de Aluminio</div>
+                    <p class="product-description">Botella reutilizable de aluminio ligero con tapón térmico hermético de seguridad. Capacidad óptima de 750ml.</p>
+                    <div class="product-footer">
+                        <div class="product-price">12,50€</div>
+                        <button class="buy-btn" onclick="window.location.href='Reservas.html'">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PIE DE PÁGINA TOTALMENTE RECTO -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Giro 180º</h4>
+                <p>Tu centro de entrenamiento personal en Sevilla. Redefiniendo el concepto de fitness y comunidad activa.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Enlaces</h4>
+                <a href="Inicio.html">Inicio</a>
+                <a href="Tarifas.html">Tarifas</a>
+                <a href="Reservas.html">Reservas</a>
+            </div>
+            <div class="footer-col footer-map">
+                <h4>Ubicación</h4>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.1691340156994!2d-5.969850123617303!3d37.433100331821815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126c06a38cf02f%3A0x6bcf36a57c9df25f!2sGIRO%20180!5e0!3m2!1ses!2ses!4v1716405000000!5m2!1ses!2ses" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Giro 180º. Todos los derechos reservados. Pino Montano, Sevilla.
+        </div>
+    </footer>
+
+</body>
+</html>
